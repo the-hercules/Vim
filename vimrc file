@@ -1,0 +1,57 @@
+set number
+set relativenumber
+set ts=4 sw=4
+set autoindent
+filetype plugin indent on
+
+" copy and paste
+vmap <C-c> "+yi
+vmap <C-x> "+c
+vmap <C-v> c<ESC>"+p
+imap <C-v> <ESC>"+pa
+
+
+
+"this is used to make cursor thin in insert mode
+if has("autocmd")
+  au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
+  au InsertEnter,InsertChange *
+    \ if v:insertmode == 'i' | 
+    \   silent execute '!echo -ne "\e[6 q"' | redraw! |
+    \ elseif v:insertmode == 'r' |
+    \   silent execute '!echo -ne "\e[4 q"' | redraw! |
+    \ endif
+  au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
+endif
+
+"NERDTree Customizaton
+
+"this code is to start nerdtree plugin on startup
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+"this code is used to map NERDTreeToggle to Leader+t
+nnoremap <Leader>t :NERDTreeToggle<Enter>
+
+"this code is used to map NERDTreeFind to Leader+f
+nnoremap <silent> <Leader>f :NERDTreeFind<CR>
+"this code is used to move around split windows with pressing of Ctrl+[i,j,k,l] instead of pressing W in between
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+
+
+
+"Starting of vim-plug
+call plug#begin('~/.vim/plugged')
+"start putting plugins here
+Plug 'jiangmiao/auto-pairs'
+Plug 'preservim/nerdtree'
+Plug 'morhetz/gruvbox'
+Plug 'yegappan/taglist'
+call plug#end()
+
+
+colorscheme gruvbox
+set bg=dark
